@@ -7,6 +7,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
+import com.study.vo.UserVO;
+
 @WebService(name = "HelloWorldService", targetNamespace = "http://www.study.com/hello")
 @SOAPBinding(style = Style.RPC)
 public interface IHelloWorldService {
@@ -19,4 +21,8 @@ public interface IHelloWorldService {
 	 */
 	@WebMethod(operationName = "hello")
 	public @WebResult(name = "result") String hello(@WebParam(name = "name") String name);
+
+	@WebMethod(operationName = "getUser")
+	@WebResult(name = "userResult")
+	public UserVO getUser(@WebParam(name = "id") Integer id);
 }
