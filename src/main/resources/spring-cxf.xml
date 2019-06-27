@@ -3,17 +3,36 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	http://cxf.apache.org/jaxws
-	http://cxf.apache.org/schemas/jaxws.xsd">
+	http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/jaxrs
+	http://cxf.apache.org/schemas/jaxrs.xsd">
 
+	<!-- ws 形式的WebService发布 -->
 	<!--其中id是自己定义的，implementor是接口实现类，address就是访问的地址 -->
-	<!-- 相当于Endpoint.publish("http://localhost:8080/WebServiceDemo/ws", new HelloWorldService()); -->
+	<!-- 相当于Endpoint.publish("http://localhost:8080/WebServiceDemo/ws", new 
+		HelloWorldService()); -->
+	<jaxws:endpoint id="wsHelloWorldService"
+		implementor="com.study.jws.HelloWorldService"
+		address="/wsHelloWorldService" />
 
-	<jaxws:endpoint id="helloWorldService"
-		implementor="com.study.jws.HelloWorldService" address="/helloWorld" />
+	<!-- rs 形式的WebService发布 -->
+	<!-- 访问地址： http://localhost:8080/WebServiceDemo/ws/rs/rshelloworld/sayhello/guang 或  http://localhost:8080/WebServiceDemo/ws/rs/rshelloworld/saybye?name=guang -->
+	<jaxrs:server id="rsHelloWorldService" address="/rs">
+		<jaxrs:serviceBeans>
+			<bean class="com.study.rs.RSHelloWorld" />
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
 
 </beans>
